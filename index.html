@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Lovey love, Dayana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS is now designed for MOBILE FIRST */
+
+        :root {
+            --bg-color: #FFF8F6;
+            --primary-text-color: #444444;
+            --secondary-text-color: #666666;
+            --accent-color: #E8B4B8;
+            --card-bg-color: #FFFFFF;
+            --heading-font: 'Playfair Display', serif;
+            --body-font: 'Lato', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--primary-text-color);
+            padding-top: 100px; /* Make space for the potentially taller mobile header */
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        main .content-section { display: none; }
+        main .content-section.active { display: flex; }
+
+        .content-section {
+            padding: 40px 5%; /* Less side padding for small screens */
+            min-height: calc(100vh - 100px);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: relative; /* For absolute positioning of elements within */
+            overflow: hidden; /* Crucial to contain animations */
+        }
+        
+        h2 {
+            font-family: var(--heading-font);
+            font-size: 2.5em; /* Mobile-friendly font size */
+            color: var(--accent-color);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 5%;
+            background: linear-gradient(90deg, #ffdde1, #ffae8b, #f9d423);
+            display: flex;
+            flex-direction: column; /* Stack logo and nav vertically on mobile */
+            gap: 15px;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-family: var(--heading-font);
+            font-size: 1.5em;
+            color: #583c3c;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap; /* Allow tabs to wrap on small screens */
+            justify-content: center;
+            gap: 10px 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #583c3c;
+            font-weight: 700;
+            font-size: 0.9em;
+            padding: 5px;
+            transition: color 0.3s ease;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        nav a:hover, nav a.active-tab {
+            color: #FFFFFF;
+        }
+        
+        #home h1 {
+            font-family: var(--heading-font);
+            font-size: 3em; /* Smaller H1 for mobile */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #home p {
+            font-size: 1.1em;
+            color: var(--secondary-text-color);
+            max-width: 600px;
+            text-align: center;
+        }
+
+        /* Home media container for responsive layout */
+        .home-media-container {
+            display: flex;
+            flex-direction: column; /* Stack vertically on mobile */
+            gap: 30px;
+            margin-top: 30px;
+            align-items: center; /* Center items when stacked */
+            width: 100%;
+            max-width: 800px; /* Limit overall width */
+        }
+
+        .home-media-container img,
+        .home-media-container video {
+            width: 90%; /* Take up most of the width */
+            max-width: 400px; /* Limit individual item width */
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            height: auto; /* Maintain aspect ratio */
+        }
+
+
+        .cedar-tree {
+            width: 80px; /* Slightly smaller tree for mobile */
+            height: 80px;
+            margin-top: 30px;
+            fill: #00A859;
+            opacity: 0.7;
+        }
+        
+        .special-message-box {
+            background-color: var(--card-bg-color);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 800px;
+            text-align: center;
+        }
+        .special-message-box p { font-size: 1.1em; line-height: 1.6; margin-bottom: 20px; }
+        .special-message-box .signature { font-family: var(--heading-font); font-size: 1.5em; font-style: italic; color: var(--accent-color); }
+
+        .about-grid, .memory-grid { display: grid; grid-template-columns: 1fr; gap: 20px; width: 100%; }
+        .about-item, .memory-card { background: var(--card-bg-color); padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .about-item h3, .memory-card h3 { font-family: var(--heading-font); color: var(--accent-color); margin-bottom: 15px; }
+
+        .timeline { position: relative; width: 100%; padding: 20px 0; }
+        .timeline::after { content: ''; position: absolute; width: 6px; background-color: var(--accent-color); top: 0; bottom: 0; left: 30px; margin-left: -3px; }
+        .timeline-container { padding-left: 60px; padding-right: 15px; position: relative; width: 100%; margin-bottom: 20px; }
+        .timeline-container::after { content: ''; position: absolute; width: 25px; height: 25px; left: 15px; background-color: white; border: 4px solid var(--accent-color); top: 15px; border-radius: 50%; z-index: 1; }
+        .timeline-content { padding: 20px; background-color: white; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .timeline-content h3 { font-family: var(--heading-font); }
+        .timeline-text { text-align: center; }
+        .timeline-image { width: 120px; height: 120px; border-radius: 10px; object-fit: cover; }
+
+        #countdown-timer { font-size: 2.2em; font-weight: bold; display: flex; flex-direction: column; gap: 15px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        #countdown-timer span { font-size: 0.5em; font-weight: normal; color: var(--secondary-text-color); }
+        #countdown-section p { margin-top: 30px; font-size: 1.2em; color: var(--secondary-text-color); text-align: center; }
+
+        /* --- BIRTHDAY CAKE & ANIMATION STYLES --- */
+        #countdown-section.celebration-active {
+            background: linear-gradient(to bottom, #ffdde1, #f9d423); /* Soft gradient background */
+            transition: background 2s ease-in-out;
+        }
+
+        #birthday-cake-scene { 
+            display: none; /* Hidden by default */ 
+            flex-direction: column; 
+            align-items: center; 
+            position: relative; 
+            width: 100%; 
+            min-height: 400px; /* Ensure enough space for animations */
+            margin-top: 50px; /* Give some space below the section title */
+        }
+        .cake-container { 
+            position: relative; 
+            z-index: 10; /* Cake should be on top of general content, but below text */
+        }
+        .cake-base { 
+            width: 250px; 
+            height: 100px; 
+            background: #f2d4d7; 
+            border-radius: 50% / 30%; 
+            position: relative; 
+            border: 5px solid #e8b4b8; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .cake-icing { 
+            width: 260px; 
+            height: 20px; 
+            background: white; 
+            border-radius: 50% / 50%; 
+            position: absolute; 
+            top: -10px; 
+            left: -5px; 
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        .candles { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            position: absolute; 
+            width: 100%; 
+            top: -50px; 
+        }
+        .candle { 
+            width: 10px; 
+            height: 40px; 
+            background: #7fdefe; 
+            position: relative; 
+            border-radius: 2px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .flame { 
+            width: 10px; 
+            height: 15px; 
+            background: orange; 
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; 
+            position: absolute; 
+            top: -15px; 
+            transition: opacity 0.3s ease; 
+            animation: flicker 1s infinite alternate; 
+            filter: drop-shadow(0 0 5px orange);
+        }
+        @keyframes flicker { 
+            0% { transform: scaleY(1); background: orange; } 
+            100% { transform: scaleY(1.1); background: yellow; } 
+        }
+        .blow-instruction { 
+            margin-top: 20px; 
+            font-size: 1.1em; 
+            color: var(--secondary-text-color); 
+            text-align: center;
+            z-index: 5;
+        }
+
+        .happy-birthday-message { 
+            font-family: var(--heading-font); 
+            font-size: 3em; 
+            color: var(--accent-color); 
+            opacity: 0; 
+            position: absolute; 
+            top: 15%; /* Start above the center */
+            left: 50%; 
+            transform: translate(-50%, -50%) scale(0.5); /* Start smaller */
+            text-align: center; 
+            white-space: nowrap; 
+            z-index: 100; /* Make sure it's on top of everything else */
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            will-change: transform, opacity; /* Hint for browser optimization */
+        }
+        .celebration.active .happy-birthday-message { 
+            animation: flyInAndBounce 2s ease-out forwards; 
+        }
+        
+        @keyframes flyInAndBounce {
+            0% { 
+                top: 0%; 
+                opacity: 0; 
+                transform: translate(-50%, -100%) scale(0.5); 
+            }
+            50% { 
+                top: 50%; 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1.1); /* Overshoot slightly */
+            }
+            75% {
+                top: 50%;
+                transform: translate(-50%, -50%) scale(0.95); /* Slight bounce back */
+            }
+            100% { 
+                top: 50%; 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1); 
+            }
+        }
+
+        .balloon { 
+            position: absolute; 
+            width: 50px; 
+            height: 60px; 
+            background-color: pink; 
+            border-radius: 50%; 
+            opacity: 0; 
+            bottom: -100px; /* Start off-screen */ 
+            transform: translateX(-50%);
+            left: 50%;
+            z-index: 5; /* Below cake, above bunnies */
+        }
+        
+        .celebration.active .balloon {
+            animation: floatUp 6s ease-out forwards;
+            opacity: 1; 
+        }
+        .balloon:nth-child(1) { background-color: #ffdde1; left: 20%; animation-delay: 0s; }
+        .balloon:nth-child(2) { background-color: #ffae8b; left: 50%; animation-delay: 0.5s; }
+        .balloon:nth-child(3) { background-color: #f9d423; left: 80%; animation-delay: 1s; }
+        
+        .bunny { 
+            font-size: 3em; 
+            position: absolute; 
+            bottom: 50px; 
+            opacity: 0; 
+            z-index: 15; /* Bunnies pop out over the cake */
+            filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.2));
+        }
+
+        .celebration.active .bunny.one {
+            animation: popOut 1s ease-out 0.8s forwards;
+        }
+        .celebration.active .bunny.two {
+            animation: popOut 1s ease-out 1.2s forwards;
+        }
+        .bunny.one { left: 10%; }
+        .bunny.two { right: 10%; }
+        
+        @keyframes floatUp { 
+            0% { bottom: -100px; opacity: 0.8; transform: translateX(-50%) scale(1); } 
+            100% { bottom: 100vh; opacity: 0; transform: translateX(-50%) scale(1.2); } 
+        }
+
+        @keyframes popOut {
+            0% {
+                transform: scale(0) translateY(50px);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.1) translateY(0);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+        /* --- END OF NEW STYLES --- */
+
+        .notes-container { display: flex; flex-direction: column; gap: 30px; width: 100%; align-items: center; }
+        .note { background: #feff9c; padding: 25px; width: 90%; max-width: 280px; height: auto; min-height: 200px; box-shadow: 5px 5px 15px rgba(0,0,0,0.1); font-family: 'Playfair Display', serif; font-size: 1.3em; }
+
+        footer { text-align: center; padding: 40px; background: var(--accent-color); color: white; }
+        
+        @media (min-width: 768px) {
+            body { padding-top: 80px; }
+            header { flex-direction: row; padding: 20px 10%; }
+            nav ul { flex-wrap: nowrap; gap: 25px; }
+            nav a { font-size: 1em; }
+            h2 { font-size: 3em; }
+            #home h1 { font-size: 4.5em; }
+            
+            .home-media-container {
+                flex-direction: row; /* Layout side-by-side on larger screens */
+                justify-content: center; /* Center horizontally */
+                align-items: flex-start; /* Align tops of items */
+            }
+
+            .home-media-container img,
+            .home-media-container video {
+                width: 45%; /* Use about half the container width each */
+            }
+
+            .about-grid { grid-template-columns: repeat(2, 1fr); }
+            .memory-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+            .timeline::after { left: 50%; }
+            .timeline-container { width: 50%; padding-left: 40px; padding-right: 40px; }
+            .timeline-container.left { left: 0; }
+            .timeline-container.right { left: 50%; }
+            .timeline-container.right::after { left: -16px; }
+            .timeline-content { flex-direction: row; text-align: left; }
+            .timeline-text { flex: 1; }
+            .timeline-image { order: 2; }
+            .timeline-container.right .timeline-image { order: -1; }
+            #countdown-timer { flex-direction: row; font-size: 3.5em; padding: 40px; gap: 20px; }
+            .notes-container { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .note { width: 280px; height: 280px; }
+
+            /* Adjust cake scene for larger screens if needed */
+            #birthday-cake-scene { 
+                min-height: 600px; /* More space for animations on desktop */
+                margin-top: 0; /* Adjust margin if needed for larger screens */
+            }
+
+            .happy-birthday-message {
+                font-size: 4.5em; /* Larger for desktop */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a class="logo">For Dayana ❤️</a>
+        <nav>
+            <ul>
+                <li><a data-target="home" class="nav-link active-tab">Home</a></li>
+                <li><a data-target="about" class="nav-link">About</a></li>
+                <li><a data-target="story" class="nav-link">Story</a></li>
+                <li><a data-target="memories" class="nav-link">Memories</a></li>
+                <li><a data-target="countdown-section" class="nav-link">Birthday</a></li>
+                <li><a data-target="notes" class="nav-link">Notes</a></li>
+                <li><a data-target="special-message" class="nav-link">Special Message</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="content-section active">
+             <h1>To the love of my life, Dayana.</h1>
+            <p>I created this little space to celebrate my dayday and the beautiful memories we're making together hihi💙 Every word, every memory... it's all for you.</p>
+            <div class="home-media-container">
+                <video controls playsinline autoplay loop muted>
+                    <source src="Media/specialmessage.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <img src="Media/Hbday.PNG" alt="Happy birthday photo of Dayana"> </div>
+            <svg class="cedar-tree" viewBox="0 0 512 512"><path fill="#00A859" d="M384 224v-16h-48v-16h-32v16h-32v-16h-32v16h-32v-16h-48v16h-48v48h48v-16h48v16h32v-16h32v16h32v-16h32v16h48v-48h-48zm-160 32h-32v16h32v-16zm64 0h-32v16h32v-16zm-128-64h-48v16h48v-16zm192 0h-48v16h48v-16z"/><path fill="#00A859" d="M256 16c-4.4 0-8 3.6-8 8v32h16V24c0-4.4-3.6-8-8-8z"/><path fill="#00A859" d="M288 80h-64v16h64V80z"/><path fill="#00A859" d="M320 112h-32v16h32v-16zm-128 0H192v16h32v-16z"/><path fill="#00A859" d="M352 144h-32v16h32v-16zm-192 0h-32v16h32v-16z"/><path d="M384 176h-32v16h32v-16zm-256 0h-32v16h32v-16z"/><path d="M288 304v192h-64V304h64z"/></svg>
+        </section>
+
+        <section id="about" class="content-section">
+            <h2>Everything I Love About Dayday</h2>
+            <img src="Media/about-dayana-photo.jpg" alt="A photo of Dayana" style="width: 90%; max-width: 350px; border-radius: 10px; margin-bottom: 40px;">
+            <div class="about-grid">
+                <div class="about-item"><h3>Your Beautiful Mind</h3><p>I love your intelligence, your humor, and the unique way you see the world.</p></div>
+                <div class="about-item"><h3>A Heart of Gold</h3><p>You have such high emotional intelligence and you care alot about others, so cute when you were getting gifts for dear family 🥰.</p></div>
+                <div class="about-item"><h3>The Sound of Your Laughter</h3><p>Your laugh is my favorite sound. It's pure joy, candy to my brain, and it makes my entire world better.</p></div>
+                <div class="about-item"><h3>Your everything</h3><p>Your perfect face, smile, amazing hair, shiny eyes, how you dress, everything. Everything about you is so perfect</p></div>
+                <div class="about-item">
+                    <h3>Your Beautiful Home</h3>
+                    <p>Me lubbbbb that you're from the beautiful region of Akkar in dear Lebanon. I imagine your small village, living beside a big mountain with the best view. It sounds so peaceful and perfect. I am going to visit you and your family there, we will share all da yummu Lebanese food, especially your fav Manakish🤤😋</p>
+                  <video controls 
+       alt="A view of the mountains in Akkar" 
+       style="width:100%; border-radius:5px; margin-top:10px;">
+  <source src="Media/akkar-view.MP4" type="video/mp4"> Your browser does not support the video tag.
+</video>
+                    <img src="Media/manakish.JPG" alt="Delicious Lebanese Manakish" style="width:100%; border-radius:5px; margin-top:10px;">
+                </div>
+                <div class="about-item">
+                    <h3>My Heart Is Yours</h3>
+                    <p>Every beat, every moment, my heart belongs completely to you, my Dayday.</p>
+                    <video controls
+                           alt="A video representing 'My heart is yours'"
+                           style="width:100%; border-radius:5px; margin-top:10px;">
+                        <source src="Media/Myheartis.MP4" type="video/mp4"> Your browser does not support the video tag.
+                    </video>
+                </div>
+                </div>
+        </section>
+
+        <section id="story" class="content-section">
+            <h2>The Story of Us</h2>
+            <div class="timeline">
+                <div class="timeline-container">
+                    <div class="timeline-content">
+                        <div class="timeline-text"><h3>How We Met</h3><p>20/10/24🥰When I saw this cutie on that app, 'I'm not from Nigeria or Lebanon, but you cute as hell'🤭💜</p></div>
+                        <img src="Media/Howwemet.JPG" alt="A photo representing how you met" class="timeline-image">
+                    </div>
+                </div>
+                <div class="timeline-container">
+                    <div class="timeline-content">
+                        <div class="timeline-text"><h3>The First Conversation</h3><p>I remember that well, the islam bashing hohoho, our first voice notes, it felt as if i knew you for years 😍🥺</p></div>
+                        <img src="Media/Voicenote.JPG" alt="A photo representing your first talk" class="timeline-image">
+                    </div>
+                </div>
+                <div class="timeline-container">
+                    <div class="timeline-content">
+                        <div class="timeline-text"><h3>Becoming Official</h3><p>30/11/24🧡 'Will you be my gf?' 😉 </p></div>
+                        <img src="Media/Official.JPG" alt="A photo of you as a couple" class="timeline-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="memories" class="content-section">
+            <h2>Our Memory Jar</h2>
+            <div class="memory-grid">
+                <div class="memory-card"><h3>The Day I Became Your 'Bunbun' 🐰</h3><p>I'll never forget the first time you called me 'Bunbun.' I'll never forget it🐰💖, It always makes me smile.</p></div>
+                <div class="memory-card"><h3>Addicted to Your Smile</h3><p>I have a confession: sometimes I say things just to see your reaction. I love your laugh, the way you smile, and the way your beautiful, shiny eyes look at me through the camera. It's wonderfully addicting.</p></div>
+                <div class="memory-card"><h3>Closer Than Miles</h3><p>Every video call with you feels like a gift. In a world where we might be apart, seeing your face and hearing your voice makes the distance disappear completely.</p></div>
+                <div class="memory-card"><h3>My Promise to You</h3><p>Always remember: You are my baby. I will be there for you through everything. When you feel down, know that your bunny is always thinking about you. You are the light in my life. 💞</p></div>
+
+  <div class="memory-card"><h3>When we watched that movie</h3><p>And one of the characters in the movie said 'daddy' and in the corner of my eyes, i see uou looking directly at me 💀😉.</p></div>
+
+  <div class="memory-card"><h3>Facetimes with sansan 🥺💖</h3><p>So adorable he is, and how you play with him, make him laugh, you are so good with him, such a good job 🥺💜.</p></div>
+
+  <div class="memory-card"><h3>Getting lost in your eyes on facetime</h3><p>I can'thelp it, your eyes are so beautiful, you are the most perfect cutest package 🫀💜😻</p></div>
+
+                <div class="memory-card"><h3>Us 💜</h3><ul><li>The Very First Voice Note</li><li>"you are a kefir"</li><li>"U DA SUS!!!!!!"</li><li>8 Ballz 🎱</li> <li>Dayday taking da L 😉</li></ul></div>
+            </div>
+        </section>
+
+        <section id="countdown-section" class="content-section">
+            <h2>Counting Down to My Favourite Day!</h2>
+            <div id="countdown-timer"></div>
+            <p id="countdown-message">I can't wait hohohoho big 23 now😁!</p>
+
+            <div id="birthday-cake-scene">
+                <div class="cake-container">
+                    <div class="cake-base"></div>
+                    <div class="cake-icing"></div>
+                    <div class="candles">
+                        <div class="candle"><div class="flame"></div></div>
+                        <div class="candle"><div class="flame"></div></div>
+                        <div class="candle"><div class="flame"></div></div>
+                    </div>
+                </div>
+                <p class="blow-instruction">Make a wish and blow into the mic!</p>
+            </div>
+            
+            <div class="celebration">
+                <div class="happy-birthday-message">Happy Birthday<br>my Dayday 💕</div>
+                <div class="balloon"></div>
+                <div class="balloon"></div>
+                <div class="balloon"></div>
+                <div class="bunny one">🐰</div>
+                <div class="bunny two">🐰</div>
+            </div>
+        </section>
+
+        <section id="notes" class="content-section">
+            <h2>Love Notes</h2>
+            <div class="notes-container">
+                <div class="note"><p>Just thinking about your smile today. It's all I need. ❤️</p></div>
+                <div class="note"><p>"I love you without knowing how, or when, or from where..." - Pablo Neruda</p></div>
+                <div class="note"><p>Can't wait for your next birthday 🎈. You make every second special. I love you😍.</p></div>
+                <div class="note"><p>I love you, i can't stop saying it😍.</p></div>
+                <div class="note"><p>You are my soul❣️</p></div>
+                <div class="note"><p>Counting down the seconds until I see you at the airport. That first hug will be the start of our forever.</p></div>
+                <div class="note"><p>I can't wait to do everything and nothing with you. Just imagining waking up next to my booboo every day...</p></div>
+                <div class="note"><p>You're my greatest love,' and that's the truest thing I know.</p></div>
+                <div class="note"><p>Signed, sealed, delivered, I'm yours. Forever your hubby, forever my booboo.</p></div>
+                <div class="note"><p>Our future isn't just a dream, it's a plan. Building a life with you is my biggest and best project.</p></div>
+                <div class="note"><p>Sometimes I feel like you are breathing me to life with every moment we share. You're my air.</p></div>
+                <div class="note"><p>Just a note from your bunny to remind you that you're the most precious person in the world. 🐰❤️</p></div>
+                <div class="note"><p>You were born a Gemini (June 10), which explains why you're so brilliant, funny,(sus 😉)and can always make me laugh. It was written in the stars!</p></div>
+                <div class="note"><p>You are such a star in my eyes.</p></div>
+                <div class="note"><p>Our love story would have a Sia soundtrack. Full of passion, power, and a little bit of beautiful drama.</p></div>
+                <div class="note"><p>Every day I find a new little thing to love about you. Lately, it was the way you said bunny 🐰.</p></div>
+                <div class="note"><p>That airport arrival gate is going to be the finish line of this long-distance race. I can't wait to cross it with you.</p></div>
+                <div class="note"><p>Your birthstone is the Pearl and your flower is the Rose. A classic, beautiful, and timeless combination... just like you, my booboo.</p></div>
+                <div class="note"><p>I daydream about our future home. Not the place, but the feeling of being home because I'm with you.</p></div>
+                <div class="note"><p>This bunny promises you a lifetime of forehead kisses, taps on the head, and so much love. It's a forever thing hihi.</p></div>
+            </div>
+        </section>
+
+        <section id="special-message" class="content-section">
+            <h2>A Special Message for My Booboo</h2>
+            <div class="special-message-box">
+                <p>My dearest Dayana, my booboo,</p>
+                <p>If you're reading this, it means the little website I've been working on is finally working hoho. I wanted to create something that was just for you—a small corner of the internet that belongs to us. Every word, every photo, every memory is a testament to how much you mean to me.</p>
+                <p>This isn't just a collection of words and images; it's a piece of my heart. It's a promise that I'll always love you, celebrate you, and look forward to the infinite memories we have yet to make. From our first conversation about your fav religion 😉 to our future, every moment with you is my favourite.</p>
+                <p class="signature">Happy Birthday, my love. I can't wait to start the next chapter with you.<br>Forever yours,<br>Your bunny and hubby</p>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // --- Tab-Switching Logic ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    navLinks.forEach(navLink => navLink.classList.remove('active-tab'));
+                    document.getElementById(targetId).classList.add('active');
+                    this.classList.add('active-tab');
+                });
+            });
+        });
+
+        // --- Birthday Countdown & Interactive Cake Logic ---
+        // Set the birthday to June 10th of the current year (or next year if past June 10th)
+        const now = new Date();
+        let birthdayYear = now.getFullYear();
+        // Assuming Dayana's birthday is June 10th. If today is June 8, 2025, it will correctly use 2025.
+        // If it were June 10, 2025, or later, it would use 2026.
+        if (now.getMonth() > 5 || (now.getMonth() === 5 && now.getDate() >= 10)) { // 5 is June (0-indexed)
+            birthdayYear++;
+        }
+        const birthdayDateString = `${birthdayYear}-06-10T00:00:00`; 
+        const birthday = birthdayDateString; // Use the dynamically set birthday
+
+        const countdownTimerEl = document.getElementById("countdown-timer");
+        const countdownMessageEl = document.getElementById("countdown-message");
+        const cakeSceneEl = document.getElementById("birthday-cake-scene");
+        const countdownSectionEl = document.getElementById("countdown-section"); // Get the section itself
+        let audioContext;
+        let analyser;
+        let microphone;
+        let javascriptNode;
+        let candlesBlownOut = false;
+
+        function startBirthdayCelebration() {
+            countdownTimerEl.style.display = 'none';
+            countdownMessageEl.style.display = 'none';
+            cakeSceneEl.style.display = 'flex';
+            countdownSectionEl.classList.add('celebration-active'); // Add class for background change
+            
+            // Ask for microphone permission
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(function(stream) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioContext.createAnalyser();
+                    microphone = audioContext.createMediaStreamSource(stream);
+                    javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+
+                    analyser.smoothingTimeConstant = 0.8;
+                    analyser.fftSize = 1024;
+
+                    microphone.connect(analyser);
+                    analyser.connect(javascriptNode);
+                    javascriptNode.connect(audioContext.destination);
+
+                    javascriptNode.onaudioprocess = function() {
+                        if (candlesBlownOut) return;
+                        var array = new Uint8Array(analyser.frequencyBinCount);
+                        analyser.getByteFrequencyData(array);
+                        var values = 0;
+                        var length = array.length;
+                        for (var i = 0; i < length; i++) {
+                            values += (array[i]);
+                        }
+                        var average = values / length;
+                        // Check if the average volume is above a threshold (a "blow")
+                        // You might need to adjust this threshold (e.g., 60) based on microphone sensitivity
+                        if (average > 60) { 
+                            blowOutCandles();
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    console.error("Error accessing microphone: ", err);
+                    const instruction = document.querySelector('.blow-instruction');
+                    instruction.textContent = "Mic permission denied. Tap the cake to blow out candles!";
+                    // Fallback: If mic denied, allow a tap/click to blow out candles
+                    cakeSceneEl.addEventListener('click', blowOutCandles, { once: true });
+                });
+        }
+
+        function blowOutCandles() {
+            if (candlesBlownOut) return;
+            candlesBlownOut = true;
+
+            const flames = document.querySelectorAll('.flame');
+            flames.forEach(flame => {
+                flame.style.opacity = '0';
+            });
+
+            const instruction = document.querySelector('.blow-instruction');
+            instruction.style.display = 'none';
+            
+            // Trigger the final celebration
+            const celebrationEl = document.querySelector('.celebration');
+            celebrationEl.classList.add('active');
+
+            // Stop listening to the microphone
+            if (javascriptNode) javascriptNode.disconnect();
+            if (microphone) microphone.disconnect();
+            if (analyser) analyser.disconnect();
+            if (audioContext) audioContext.close();
+        }
+
+        const countdownInterval = setInterval(function() {
+            const targetDate = new Date(birthday).getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                startBirthdayCelebration();
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            countdownTimerEl.innerHTML = `
+                <div>${days}<span>Days</span></div>
+                <div>${hours}<span>Hours</span></div>
+                <div>${minutes}<span>Minutes</span></div>
+                <div>${seconds}<span>Seconds</span></div>
+            `;
+        }, 1000);
+    </script>
+
+</body>
+</html>
